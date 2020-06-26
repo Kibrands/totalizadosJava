@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/template/base.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions">
+    <ui:define name="content">
+        <h:form>
+            <h:panelGrid columns="4">
+                <p:selectOneMenu id="centroGestorPosition" value="#{indexBean.centroGestorPosition}"
+                                 style="width:125px">
+                    <f:selectItem itemLabel="1" itemValue="1"/>
+                    <f:selectItem itemLabel="2" itemValue="2"/>
+                    <f:selectItem itemLabel="3" itemValue="3"/>
+                    <f:selectItem itemLabel="4" itemValue="4"/>
+                    <f:selectItem itemLabel="" itemValue=""/>
+                </p:selectOneMenu>
+                <p:selectOneMenu id="organicaPosition" value="#{indexBean.organicaPosition}" style="width:125px">
+                    <f:selectItem itemLabel="1" itemValue="1"/>
+                    <f:selectItem itemLabel="2" itemValue="2"/>
+                    <f:selectItem itemLabel="3" itemValue="3"/>
+                    <f:selectItem itemLabel="4" itemValue="4"/>
+                    <f:selectItem itemLabel="" itemValue=""/>
+                </p:selectOneMenu>
+                <p:selectOneMenu id="programaPosition" value="#{indexBean.programaPosition}" style="width:125px">
+                    <f:selectItem itemLabel="1" itemValue="1"/>
+                    <f:selectItem itemLabel="2" itemValue="2"/>
+                    <f:selectItem itemLabel="3" itemValue="3"/>
+                    <f:selectItem itemLabel="4" itemValue="4"/>
+                    <f:selectItem itemLabel="" itemValue=""/>
+                </p:selectOneMenu>
+                <p:selectOneMenu id="economicaPosition" value="#{indexBean.economicaPosition}" style="width:125px">
+                    <f:selectItem itemLabel="1" itemValue="1"/>
+                    <f:selectItem itemLabel="2" itemValue="2"/>
+                    <f:selectItem itemLabel="3" itemValue="3"/>
+                    <f:selectItem itemLabel="4" itemValue="4"/>
+                    <f:selectItem itemLabel="" itemValue=""/>
+                </p:selectOneMenu>
+                <h:panelGrid columns="1" style="margin-bottom:10px" cellpadding="5">
+                    <p:selectManyCheckbox id="centroGestor" value="#{indexBean.selectedCentroGestor}" layout="grid"
+                                          columns="1">
+                        <f:selectItem itemLabel="Centro Gestor" itemValue="Centro Gestor"/>
+                    </p:selectManyCheckbox>
+                </h:panelGrid>
+                <h:panelGrid columns="1" style="margin-bottom:10px" cellpadding="5">
+                    <p:outputLabel for="@next" value="Orgánica:"/>
+                    <p:selectManyCheckbox id="organica" value="#{indexBean.selectedOrganicas}" layout="grid"
+                                          columns="1">
+                        <f:selectItem itemLabel="Nivel 1" itemValue="Nivel 1"/>
+                        <f:selectItem itemLabel="Nivel 2" itemValue="Nivel 2"/>
+                        <f:selectItem itemLabel="Nivel 3" itemValue="Nivel 3"/>
+                        <f:selectItem itemLabel="Nivel 4" itemValue="Nivel 4"/>
+                        <f:selectItem itemLabel="Nivel 5" itemValue="Nivel 5"/>
+                    </p:selectManyCheckbox>
+                </h:panelGrid>
+                <h:panelGrid columns="1" style="margin-bottom:10px" cellpadding="5">
+                    <p:outputLabel for="@next" value="Programa:"/>
+                    <p:selectManyCheckbox id="programa" value="#{indexBean.selectedProgramas}" layout="grid"
+                                          columns="1">
+                        <f:selectItem itemLabel="Área de gasto" itemValue="Área de gasto"/>
+                        <f:selectItem itemLabel="Política" itemValue="Política"/>
+                        <f:selectItem itemLabel="Grupo Prog" itemValue="Grupo Prog"/>
+                        <f:selectItem itemLabel="Programa" itemValue="Programa"/>
+                        <f:selectItem itemLabel="Subprograma" itemValue="Subprograma"/>
+                    </p:selectManyCheckbox>
+                </h:panelGrid>
+                <h:panelGrid columns="1" style="margin-bottom:10px" cellpadding="5">
+                    <p:outputLabel for="@next" value="Económica:"/>
+                    <p:selectManyCheckbox id="economica" value="#{indexBean.selectedEconomicas}" layout="grid"
+                                          columns="1">
+                        <f:selectItem itemLabel="Capítulo" itemValue="Capítulo"/>
+                        <f:selectItem itemLabel="Artículo" itemValue="Artículo"/>
+                        <f:selectItem itemLabel="Concepto" itemValue="Concepto"/>
+                        <f:selectItem itemLabel="Programa" itemValue="Programa"/>
+                        <f:selectItem itemLabel="Partida" itemValue="Partida"/>
+                    </p:selectManyCheckbox>
+                </h:panelGrid>
+            </h:panelGrid>
+            <p:commandButton action="#{indexBean.filtrar}" value="Buscar" icon="fa fa-fw fa-search"
+                             style="margin:20px 0;display:block" update="aplicacionTable"/>
+
+            <p:dataTable id="aplicacionTable" var="aplicacion" value="#{indexBean.aplicacionesFiltradas}">
+
+                <c:if test="${!indexBean.isCentroGestorEmpty}">
+                    <p:column headerText="Centro Gestor">
+                        <h:outputText rendered="#{aplicacion.key.total}" style="font-weight:bold" value="#{aplicacion.key.centroGestor}"/>
+                        <h:outputText rendered="#{!(aplicacion.key.total)}" value="#{aplicacion.key.centroGestor}"/>
+                    </p:column>
+                </c:if>
+
+                <c:if test="${!indexBean.isOrganicaEmpty}">
+                    <p:column headerText="Orgánica">
+                        <h:outputText rendered="#{aplicacion.key.total}" style="font-weight:bold" value="#{aplicacion.key.organica}"/>
+                        <h:outputText rendered="#{!(aplicacion.key.total)}" value="#{aplicacion.key.organica}"/>
+                    </p:column>
+                </c:if>
+
+                <c:if test="${!indexBean.isProgramaEmpty}">
+                    <p:column headerText="Programa">
+                        <h:outputText value="#{aplicacion.key.programa}"/>
+                    </p:column>
+                </c:if>
+
+                <c:if test="${!indexBean.isEconomicaEmpty}">
+                    <p:column headerText="Económica">
+                        <h:outputText value="#{aplicacion.key.economica}"/>
+                    </p:column>
+                </c:if>
+
+                <p:column headerText="Descripción">
+                    <h:outputText rendered="#{aplicacion.key.total}" style="font-weight:bold" value="#{aplicacion.key.descripcion}"/>
+                    <h:outputText rendered="#{!(aplicacion.key.total)}" value="#{aplicacion.key.descripcion}"/>
+                </p:column>
+
+                <p:column headerText="Obligaciones Reconocidas">
+                    <h:outputText rendered="#{aplicacion.key.total}" style="font-weight:bold" value="#{aplicacion.value}"/>
+                    <h:outputText rendered="#{!(aplicacion.key.total)}" value="#{aplicacion.value}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
